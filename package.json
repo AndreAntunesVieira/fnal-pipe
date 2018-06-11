@@ -1,0 +1,39 @@
+{
+  "name": "fnal-pipe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "babel src.js --out-file index.js",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndreAntunesVieira/fnal-pipe.git"
+  },
+  "keywords": [
+    "functional",
+    "fnal",
+    "pipe"
+  ],
+  "author": "Andre Antunes Vieira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndreAntunesVieira/fnal-pipe/issues"
+  },
+  "homepage": "https://github.com/AndreAntunesVieira/fnal-pipe#readme",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "regenerator-runtime": "^0.11.1",
+    "babel-cli": "^6.26.0",
+    "jest": "^23.1.0",
+    "babel-jest": "^23.0.1"
+  }
+}
