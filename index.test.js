@@ -9,23 +9,36 @@ function fnalPipeTests (name, fnalPipe) {
     const sum2 = value => value + 2
     const double = value => value * 2
 
-    expect(fnalPipe(sum2, sum2)(0)).toBe(4)
-    expect(fnalPipe(double, sum2)(3)).toBe(8)
-    expect(fnalPipe(sum2, double)(3)).toBe(10)
-    expect(fnalPipe(sum2, sum2, sum2, sum2, double, sum2, sum2, sum2)(0)).toBe(22)
+    execSyncTest(sum2, sum2)(0)(4)(fnalPipe)
+    execSyncTest(double, sum2)(3)(8)(fnalPipe)
+    execSyncTest(sum2, double)(3)(10)(fnalPipe)
+    execSyncTest(sum2, sum2, sum2, sum2, double, sum2, sum2, sum2)(0)(22)(fnalPipe)
   })
 
   test(`${name} build - with at least one async method`, async () => {
     const sum2 = value => value + 2
     const double = value => Promise.resolve(value * 2)
 
-    expect(await fnalPipe(sum2, sum2)(0)).toBe(4)
-    expect(await fnalPipe(double, sum2)(3)).toBe(8)
-    expect(await fnalPipe(sum2, double)(3)).toBe(10)
-    expect(await fnalPipe(sum2, sum2, sum2, sum2, double, sum2, sum2, sum2)(0)).toBe(22)
-
+    await execAsyncTest(sum2, sum2)(0)(4)(fnalPipe)
+    await execAsyncTest(double, sum2)(3)(8)(fnalPipe)
+    await execAsyncTest(sum2, double)(3)(10)(fnalPipe)
+    await execAsyncTest(sum2, sum2, sum2, sum2, double, sum2, sum2, sum2)(0)(22)(fnalPipe)
     return fnalPipe(sum2, double)(0)
       .then(result => expect(result).toBe(4))
   })
 
+}
+
+function execSyncTest (...params) {
+  return firstArg => expectedResult => fnalPipe => {
+    expect(fnalPipe(...params)(firstArg)).toBe(expectedResult)
+    expect(fnalPipe(firstArg, ...params)).toBe(expectedResult)
+  }
+}
+
+function execAsyncTest (...params) {
+  return firstArg => expectedResult => async fnalPipe => {
+    expect(await fnalPipe(...params)(firstArg)).toBe(expectedResult)
+    expect(await fnalPipe(firstArg, ...params)).toBe(expectedResult)
+  }
 }

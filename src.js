@@ -1,12 +1,19 @@
 export default function fnalPipe (firstMethod, ...methods) {
+  if (typeof firstMethod === 'function') {
+    return fnalPipeRecursive(firstMethod, ...methods)
+  }
+  return fnalPipeRecursive(...methods)(firstMethod)
+}
+
+function fnalPipeRecursive (firstMethod, ...methods) {
   return value => {
     if (typeof firstMethod !== 'function') {
       return value
     }
     const result = firstMethod(value)
     if (result instanceof Promise) {
-      return result.then(fnalPipe(...methods))
+      return result.then(fnalPipeRecursive(...methods))
     }
-    return fnalPipe(...methods)(result)
+    return fnalPipeRecursive(...methods)(result)
   }
 }
